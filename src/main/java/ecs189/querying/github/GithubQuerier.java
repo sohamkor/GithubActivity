@@ -23,7 +23,7 @@ public class GithubQuerier {
     private static final String PUSH_EVENT = "PushEvent";
     private static final String FORK_EVENT = "ForkEvent";
 
-    private static final String ACCESS_TOKEN = "";
+    private static final String ACCESS_TOKEN = "3ffe1ab05520e4ce482919610399a7c97284e28c";
 
     public static String eventsAsHTML(String user) throws IOException, ParseException {
         // Get all the relevant events that we are interested in
@@ -204,6 +204,9 @@ public class GithubQuerier {
         while (numOfPushEvents < 10 && continueTraversing) {
             String url = BASE_URL + user + "/events";
             System.out.println(url);
+
+            // Add the page number to the url
+            url += "?page=" + pageNum;
 
             // If the access token is specified, make the request leveraging that
             if (!ACCESS_TOKEN.equals("")) {
