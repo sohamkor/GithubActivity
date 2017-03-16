@@ -42,6 +42,14 @@ public class GithubQuerier {
             Date date = inFormat.parse(creationDate);
             String formatted = outFormat.format(date);
 
+            // Get the Payload as a JSONObject
+            JSONObject payload = event.getJSONObject("payload");
+            JSONArray commitArray = payload.getJSONArray("commits");
+
+            // Make sure that there are actually valid commits in this entry
+            if (commitArray.length() == 0)
+                continue;
+
             // Wrap this particular event's info in a container
             sb.append("<div class=\"container\">");
                 // And for stylistic purposes, a jumbotron
@@ -61,15 +69,24 @@ public class GithubQuerier {
 
                                 // Adapt text according to the type it is
                                 String userFriendlyTypeLabel;
-                                String repoName = event.getJSONObject("repo").getString("name");
+                                String fullRepoName = event.getJSONObject("repo").getString("name");
 
                                 // If the repo name (along with the account name) is too long, shorten it so that it properly displays
-                                if (repoName.length() > 23) {
-                                    repoName = repoName.substring(0, 21 - (repoName.length() - repoName.indexOf('/') + 1)) + "..." + repoName.substring(repoName.indexOf("/"), repoName.length());
+                                String accountName = fullRepoName.substring(0, fullRepoName.indexOf("/"));
+                                String repoName =  fullRepoName.substring(fullRepoName.indexOf("/") + 1);
+
+                                String finalRepoName;
+                                if (accountName.length() + repoName.length() > 23) {
+                                    accountName = accountName.charAt(0) + "...";
+                                    if (repoName.length() + 4 > 23) {
+                                        repoName = repoName.substring(0, 15) + "...";
+                                    }
                                 }
 
+                                finalRepoName = accountName + "/" + repoName;
+
                                 if (type.equals(PUSH_EVENT)) {
-                                    userFriendlyTypeLabel = "Pushed <span class=\"withLatoLight\">to</span> " + "<span class=\"label label-primary\" id=\"repoLabel\">" + repoName + "</span>";
+                                    userFriendlyTypeLabel = "Pushed <span class=\"withLatoLight\">to</span> " + "<span class=\"label label-primary\" id=\"repoLabel\">" + finalRepoName + "</span>";
                                 } else {
                                     userFriendlyTypeLabel = "Unknown Type of Event.";
                                 }
@@ -104,10 +121,6 @@ public class GithubQuerier {
                         // Now display the SHA hashes of the commits
                         sb.append("<hr class=\"commitIntroHR\">");
                         sb.append("<p class=\"withLatoRegular center\">Here are the commits associated with this push request:</p>");
-
-                        // Get the Payload as a JSONObject
-                        JSONObject payload = event.getJSONObject("payload");
-                        JSONArray commitArray = payload.getJSONArray("commits");
 
                         // Initialize a table
                         sb.append("<table class=\"table table-bordered\">");
