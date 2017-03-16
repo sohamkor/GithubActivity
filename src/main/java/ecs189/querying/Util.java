@@ -28,4 +28,17 @@ public class Util {
         String jsonText = "{root:" + content + "}";
         return new JSONObject(jsonText);
     }
+
+    // Helper methods to append the access token to get more requests via the API (Useful for debugging)
+    public static String appendAuthKey(String currentURLRequest, String accessToken) {
+        String resultURL = currentURLRequest;
+
+        if (currentURLRequest.contains("?")) {
+            resultURL += "&";
+        } else {
+            resultURL += "?";
+        }
+
+        return resultURL + "access_token=" + accessToken;
+    }
 }

@@ -103,10 +103,10 @@ pre {
 }
 
 .commitIntroHR {
-    border-top: 1px solid #502626;
+    border-top-color: #000000 !important;
     width: 75%;
 }
 
-.sha {
-    font-size: 125% !important;
+.regularSizedText {
+    font-size: 100% !important;
 }

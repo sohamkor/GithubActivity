@@ -23,6 +23,8 @@ public class GithubQuerier {
     private static final String PUSH_EVENT = "PushEvent";
     private static final String FORK_EVENT = "ForkEvent";
 
+    private static final String ACCESS_TOKEN = "";
+
     public static String eventsAsHTML(String user) throws IOException, ParseException {
         // Get all the relevant events that we are interested in
         List<JSONObject> response = getEvents(user, PUSH_EVENT);
@@ -107,23 +109,62 @@ public class GithubQuerier {
                         JSONObject payload = event.getJSONObject("payload");
                         JSONArray commitArray = payload.getJSONArray("commits");
 
-                        for (int commitIndex = 0; commitIndex < commitArray.length(); commitIndex++) {
-                            JSONObject thisCommit = commitArray.getJSONObject(commitIndex);
-                            String shaOfCommit = thisCommit.getString("sha");
-                            String urlOfCommit = thisCommit.getString("url");
+                        // Initialize a table
+                        sb.append("<table class=\"table table-bordered\">");
+                            sb.append("<thead>");
+                                sb.append("<tr>");
+                                    sb.append("<th>SHA</th>");
+                                    sb.append("<th>Email</th>");
+                                    sb.append("<th>Message</th>");
+                                sb.append("</tr>");
+                            sb.append("</thead>");
 
-                            sb.append("<p class=\"withMontserratRegular center sha\"><a href=\"" + urlOfCommit + "\">");
-                            sb.append(shaOfCommit);
-                            sb.append("</a></p>");
+                            sb.append("<tbody>");
+
+                            for (int commitIndex = 0; commitIndex < commitArray.length(); commitIndex++) {
+                                JSONObject thisCommit = commitArray.getJSONObject(commitIndex);
+                                String shaOfCommit = thisCommit.getString("sha");
+                                String urlOfCommit = thisCommit.getString("url");
+                                String commitMsg = thisCommit.getString("message");
+                                String authorOfCommit = thisCommit.getJSONObject("author").getString("email");
+
+                                sb.append("<tr>");
+
+                                    // The SHA part
+                                    sb.append("<td>");
+
+                                        sb.append("<p class=\"withMontserratRegular regularSizedText\"><a href=\"" + urlOfCommit + "\">");
+                                        sb.append(shaOfCommit);
+                                        sb.append("</a></p>");
+
+                                    sb.append("</td>");
+
+                                    // Now the email
+                                    sb.append("<td>");
+
+                                        sb.append("<p class=\"withLatoLight regularSizedText\">" + authorOfCommit + "</p>");
+
+                                    sb.append("</td>");
+
+                                    // And the Message
+                                    sb.append("<td>");
+
+                                        sb.append("<p class=\"regularSizedText\">" + commitMsg + "</p>");
+
+                                    sb.append("</td>");
+
+                                sb.append("</tr>");
+                            }
                         }
-                    }
 
-                    sb.append("<br />");
+                        sb.append("</tbody>");
+                    sb.append("</table>");
+
                     // Add collapsible JSON textbox (don't worry about this for the homework; it's just a nice CSS thing I like)
-                    sb.append("<p class=\"center\" id=\"rawJSONLbl\"><a data-toggle=\"collapse\" href=\"#event-" + i + "\">Raw JSON</a></p>");
+                    sb.append("<div class=\"center\"><p id=\"rawJSONLbl\"><a data-toggle=\"collapse\" href=\"#event-" + i + "\">Raw JSON</a></p>");
                     sb.append("<div id=event-" + i + " class=\"collapse\" style=\"height: auto;\"> <pre>");
                     sb.append(event.toString());
-                    sb.append("</pre> </div>");
+                    sb.append("</pre> </div> </div>");
 
                 // Close the jumbotron div
                 sb.append("</div>");
@@ -150,6 +191,12 @@ public class GithubQuerier {
         while (numOfPushEvents < 10 && continueTraversing) {
             String url = BASE_URL + user + "/events";
             System.out.println(url);
+
+            // If the access token is specified, make the request leveraging that
+            if (!ACCESS_TOKEN.equals("")) {
+                url = Util.appendAuthKey(url, ACCESS_TOKEN);
+            }
+
             JSONObject json = Util.queryAPI(new URL(url));
             System.out.println(json);
             JSONArray events = json.getJSONArray("root");
