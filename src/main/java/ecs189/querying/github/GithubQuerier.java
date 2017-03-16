@@ -237,8 +237,12 @@ public class GithubQuerier {
 
                 // Only select events that are relevant
                 if (validType) {
-                    eventList.add(thisEvent);
-                    numOfPushEvents++;
+                    if (numOfPushEvents < 10) {
+                        eventList.add(thisEvent);
+                        numOfPushEvents++;
+                    } else {
+                        break;
+                    }
                 }
             }
 
