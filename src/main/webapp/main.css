@@ -1,6 +1,9 @@
+@import url('https://fonts.googleapis.com/css?family=Lato:300,400,900');
+@import url('https://fonts.googleapis.com/css?family=Oxygen:300,400,700');
+@import url('https://fonts.googleapis.com/css?family=Montserrat:400,700');
+
 #core {
     width: 100%;
-    margin: 50px 50px 0 50px;
 }
 
 #user {
@@ -9,4 +12,101 @@
 
 pre {
     width: 80%;
+}
+
+.center {
+    text-align: center;
+}
+
+.withLatoLight {
+    font-family: 'Lato', sans-serif;
+    font-weight: 300;
+}
+
+.withLatoRegular {
+    font-family: 'Lato', sans-serif;
+    font-weight: 400;
+}
+
+.withLatoBlack {
+    font-family: 'Lato', sans-serif;
+    font-weight: 900;
+}
+
+.withOxygenLight {
+    font-family: 'Oxygen', sans-serif;
+    font-weight: 300;
+}
+
+.withOxygenRegular {
+    font-family: 'Oxygen', sans-serif;
+    font-weight: 400;
+}
+
+.withOxygenBold {
+    font-family: 'Oxygen', sans-serif;
+    font-weight: 700;
+}
+
+.withMontserratRegular {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+}
+
+.withMontserratBold {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+}
+
+#header {
+    margin-bottom: 0px;
+    background-color: #efefef;
+}
+
+#mainContentViewport {
+    background-image: url("eventBg.png");
+}
+
+#activityDescriptor {
+    margin-top: 0px;
+    padding-top: 40px;
+}
+
+#repoLabel {
+    border-radius: 1em;
+}
+
+.type {
+    font-size: 150%;
+}
+
+#typeCol {
+    text-align: left;
+}
+
+.date {
+    font-size: 150%;
+    text-align: right;
+}
+
+#dateCol {
+    padding-top: 10px;
+}
+
+#rawJSONLbl {
+    font-size: 75%;
+}
+
+.eventJumbo {
+    border-radius: 4px !important;
+    background-color: #6bbaa7;
+}
+
+.commitIntroHR {
+    border-top: 1px solid #502626;
+    width: 75%;
+}
+
+.sha {
+    font-size: 125% !important;
 }
