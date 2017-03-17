@@ -28,27 +28,33 @@ function getCurrentActiveVersion() {
 }
 
 function swapTo() {
-    thisImage="$1"
-
-    if [ "$thisContainer" == "web1" ]
+    #Container we swap to
+    newContainer="$1"
+    newImg="$2"
+    if [ "$newContainer" != "web1" ] && [ "$newContainer" != "web2" ]
     then
-        otherContainer="web2"
-        thisContainerImg=$thisImage
+        echo "swapContainers: Invalid parameter - $newContainer"
+        exit 1
+    fi
+    if [ "$newContainer" == "web1" ]
+    then
+        oldContainer="web2"
+        newContainerImg=$newImg
         swap_script="/bin/swap1.sh"
     else
-        otherContainer="web1"
-        thisContainerImg=$thisImage
+        oldContainer="web1"
+        newContainerImg=$newImg
         swap_script="/bin/swap2.sh"
     fi
 
     # Before we start the container, we just check to make sure no stray ones of it are still remaining
-    killitif $thisContainer
+    killitif $newContainer
     # But since web1 may be spawned as ecs189_web1_1 by docker-compose, it doesn't hurt to remove that as well
-    dockerComposeName="ecs189_""$thisContainer""_1"
+    dockerComposeName="ecs189_""$newContainer""_1"
     killitif $dockerComposeName
 
     # Now start up a fresh copy of it
-    docker run -d --name $thisContainer --network $NETWORK_NAME $thisContainerImg
+    docker run -d --name $newContainer --network $NETWORK_NAME $newContainerImg
 
     # Give it some time to start up
     sleep 5
@@ -57,32 +63,22 @@ function swapTo() {
     docker exec $NGINX_CONTAINER_NAME /bin/bash $swap_script
 
     # And finally clean up the other container
-    killitif $otherContainer
+    killitif $oldContainer
 }
 
 # Start off by determining which web container to swap to
 currentActiveVersion=$(getCurrentActiveVersion)
 
-case "$1" in
-    "web1" | "1")
-        if [ "$currentActiveVersion" != "web1" ]
-        then
-            echo "Starting the swap to web1.";
-        else
-            echo "Seems like the current version already is web1."
-            exit 0
-        fi
-        swapTo "web1"
-        ;;
-    "web2" | "2")
-        if [ "$currentActiveVersion" != "web2" ]
-        then
-            echo "Starting the swap to web2.";
-        else
-            echo "Seems like the current version already is web2."
-            exit 0
-        fi
-        swapTo "web2"
-        ;;
-    *) echo "Did not recognize that parameter. Enter web1 or web2.";;
-esac
+randomImg="$1"
+
+if ["$currentActiveVersion" == "web1"]
+    then
+        echo "Starting the swap to $randomImg in container web2.";
+        swapTo "web2" "$randomImg"
+fi
+if ["$currentActiveVersion" == "web2"]
+    then
+        echo "Starting the swap to $randomImg in container web1";
+        swapTo "web1" "$randomImg"
+
+fi
