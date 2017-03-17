@@ -18,7 +18,7 @@ Our java file GithubQuerier in src/main/querying/github gets the last 10 pull re
 # Commands We Will Execute
 
 ### Manual Swap
-    1. This initializes both nginx and web1 (activity_old).  
+    1. This initializes both nginx and web1 (activity_old) containers  
     Command: ./dorun.sh
 
     2. This displays all the processes that are running so we can find the port # and display the website
@@ -43,5 +43,12 @@ Our java file GithubQuerier in src/main/querying/github gets the last 10 pull re
     
     9. Now clean up the old container that we swapped from (web2)
     Command: docker rm -f web2
+
+### Extra Credit Script Swap
+
+    1. Initializes both nginx and web1 (activity_old) containers
+    Command: ./dorun.sh
     
+    2. Specify the image you want to swap to if that image exists
+    Command: ./swapExtraCredit.sh <image_name>
 
