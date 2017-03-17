@@ -18,6 +18,11 @@ pre {
     text-align: center;
 }
 
+.centerInput {
+    display: block;
+    margin: 0 auto;
+}
+
 .withLatoLight {
     font-family: 'Lato', sans-serif;
     font-weight: 300;

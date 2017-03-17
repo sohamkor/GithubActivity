@@ -23,11 +23,14 @@
 
     <div id="mainContentViewport">
       <% if (user == null || user.isEmpty()) { %>
+      <div class="container">
         <form action="index.jsp" method="GET">
-          <div class="form-group">
-            <label for="user"><h3>Github Username:</h3></label>
-            <input type="user" name="user_name" class="form-control" id="user">
-          </div>
+          <div class="container center">
+            <div class="form-group">
+              <label for="user"><h3 class="withMontserratRegular">Enter a <span class="withMontserratBold">Username:</span></h3></label>
+              <input type="user" name="user_name" class="form-control centerInput" id="user">
+            </div>
+
           <button type="submit" class="btn btn-default">
             <c:choose>
               <c:when test="${empty user}">
@@ -39,6 +42,7 @@
             </c:choose>
           </button>
         </form>
+      </div>
       <% } else { %>
         <h3 class="withOxygenLight center" id="activityDescriptor">Here's what <span class="withLatoBlack"><%= user %></span> has been up to.</h3>
         <br />
@@ -47,9 +51,9 @@
       <div id="activity">
         <% if (user != null && !user.isEmpty()) { %>
             <%= GithubQuerier.eventsAsHTML(user) %>
-          <% } else { %>
-              Tell me who you are, and I will tell you what you did last ... week? Month? Summer? Not sure yet.
-          <% } %>
+        <% } else { %>
+            <p class="withOxygenLight center">Tell me who you are, and I will tell you what you did last ... week? Month? Summer? Not sure yet.</p>
+        <% } %>
       </div>
     </div>
   </div>
