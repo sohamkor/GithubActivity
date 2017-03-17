@@ -4,13 +4,13 @@ readonly NETWORK_NAME="ecs189_default"
 readonly NGINX_CONTAINER_NAME="ecs189_proxy_1"
 
 # ------------------- Helper Methods ------------------
-# Really handy method taken from Prem's init.sh script
+# Really handy method taken from Prem's dorun.sh script, with a minor change to adapt to our needs
 function killitif() {
     docker ps -a  > /tmp/yy_xx$$
-    if grep --quiet $1 /tmp/yy_xx$$
+    if grep --quiet -w $1 /tmp/yy_xx$$
      then
      echo "killing older version of $1"
-     docker rm -f `docker ps -a | grep $1  | sed -e 's: .*$::'`
+     docker rm -f `docker ps -a | grep $1 | sed -e 's: .*$::'`
    fi
 }
 
@@ -59,6 +59,9 @@ function swapTo() {
 
     # And finally clean up the other container
     killitif $thisContainer
+    # Once again, gotta make sure that this form of the name hasn't been configured by docker-compose
+    dockerComposeName="ecs189_""$thisContainer""_1"
+    killitif $dockerComposeName
 }
 
 function isValidImage() {
