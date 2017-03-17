@@ -1,0 +1,37 @@
+NOTE 0): DUE FRIDAY AT NOON. Graders will hold interactive grading Friday starting at Noon.
+
+NOTE 1) First of all, we decided we don’t have time left to do this on Amazon Beanstalk. Time is too short
+to learn about that, Docker, hot swapping, and get everything one. You will do this on your machine
+and demonstrate it as a team to the Grader on Friday afternoon. Sorry. I’ll try this next time. 
+
+NOTE 2) Help session this Tuesday discussion, where there will be additional revelatory “giveaways”. Don’t
+miss it. Missing this last session will leave you with lifelong regrets :-)
+
+
+I have provided some scaffolding for the last homework in the attached Tarball. 
+
+Essentially you’ll have to do this: 
+
+1) Implement the extended servlet (war file) as Vincent indicated earlier. 
+
+2) Write a swap1.sh  like the given swap2.sh (see the enclosed tarball, in the nginx directory) That does a hot swap.
+   It’s the other half of a back-and-forth hot swap. 
+
+3) Really understand all the details of the given files. I WILL ASK questions about this in the final. 
+   Be professional about this: read the manuals, look on Stackoverflow, and try to figure out what is going on
+    There’s plenty of on-line information. Asking on Piazza (although you’re welcome to ask) should
+    be your final step. THere’s a lot of interesting pieces and scripts in the scaffolding tar ball. Make sure
+    you understand ALL Of it. 
+
+4) Demonstrate to yourself, and then to us (interactive grading starting noon next friday) that you can
+   do hot swaps back forth between the versions (yours and Vincent’s original). At any time, there should
+   be only two containers running…the NGINX proxy, and your TOMCAT application. When you do the swap, there
+   SHOULD BE NO DOWNTIME. Bring the new one up, forward the NGINX to it, and then kill the old one. 
+
+5) EXTRA CREDIT: WRITE ONE SINGLE SHELL SCRIPT THAT DOES THE SWAP. 50% EXTRA CREDIT, FULL CREDIT ONLY IF THE SHELL
+   SCRIPT IS REALLY BULLET PROOF, and WORKS FIRST TIME, EVERY TIME, regardless of how many ever times you try it. 
+   Clearly this shell script will run on the host machine, but will reach into the guts of the NGINX docker, and
+   make the swap. It’s rather challenging… But Look carefully at the stuff I’ve given you, you can figure it
+   out. 
+
+

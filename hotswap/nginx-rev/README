@@ -1,0 +1,42 @@
+This is where we build the nginx docker, with
+some pre-installed shells to do swapping. 
+NGINX is a reverse proxy, which takes the request
+from outside and forwards it as indicated in the
+nginx.conf file
+
+FILES:
+
+Dockerfile: 
+  starts off with ubuntu, adds a bunch of tools, and then also
+  nginx. Then addes the nginx conf, and a bunch of shell scripts. 
+
+  WHy do these files have to be within the docker? 
+  where do we put them? why? 
+  Do they have the right permisions within ther docker? 
+  What port does this docker expose? 
+  how do we make sure that something inside the docker is listening on this port? 
+  Should this docker contain the ".war" file? Why ? or why not? 
+
+Nginx.conf
+  configuration file. Note that it initially redirects to www.cs.ucdavis.edu as a dummy.
+  This gets edited to point to web1 by init.sh
+
+
+
+init.sh
+  changes the nginx conf file in the NGINX containers to point to web1. 
+  What happens when the nginx docker receives a web request before the init.sh is run? 
+  how do you make shell scripts inside the docker run from outside? (hint: docker exec...) 
+
+swap2.sh
+  hot-swaps from web1 to web2. Read this carefully and understand waht is going on, and 
+
+
+swap1.sh
+  hotswaps from web2 to web1. You'll have to write this. Careful with permissions!!!
+  Where will this script get executed? 
+  How do you make sure this is available inside the running docker? 
+
+
+
+

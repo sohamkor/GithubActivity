@@ -1,0 +1,14 @@
+version: '2'
+services:
+  web1:
+    ports:
+     - "8080"
+    image: activity_old
+
+  proxy:
+    ports:
+     - "8888:8888"
+    image: ng
+
+
+   

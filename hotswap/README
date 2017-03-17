@@ -1,0 +1,37 @@
+THe files in this directory: 
+
+docker-compose.yml 
+  This file brings up two containers. one with nginx (see contained directory nginx-rev for how  
+  that container is built. THe nginx container has the facilities to execute the swap
+  Which port is the  ngnix listenign on?  WHy is it mapped? 
+  Why is the port on the other container not mapped? Can it be accessed from outside
+  the container? Is that necessary? Why and why not? 
+
+
+cleanup.sh (no arguments) 
+  good idea to execute this once in a while, to clean up "zombie" docker images that are halted 
+ 
+dorun.sh (no arguments) 
+  1) this shell uses the yml file to bring up the docker network
+  2) when the nginx comes up, it's pointing at the UC Davis engineering school. 
+  3) once the network comes up, it tells the nginx container, using the "init.sh" shell
+  script (see the directory below) to redirect the requests to the actual working directory. 
+  4) Note that the dorun.sh uses docker-compose command? Where does this command look for more details? 
+  5) What does the "-p" option do? Look it up in teh dcoumentation
+  6) What does the "docker exec... init.sh" do? why is there a sleep before it? 
+  
+(FOR 50% EXTRA CREDIT, WRITE the next shell script. Otherwise, you can just
+demonstrate the swap  by hand.)
+
+doswap.sh (one argument, the docker image, say DDDD, you want to run) (WRITE THIS FOR EXTRA CREDIT!!) 
+  1) if the current "live" container is named web1, then, it kills any existing one named
+      web2 brings up the new DDD named  web2. 
+  2) it tells the nginx to send the requests henceforth to web2. (using the swap1 shell script) 
+  3) it kills the web1
+  4) if the otherway around web1<->web2 using Swap2 shell script. 
+  5) HINT: Be Careful, to give enough time (using "sleep n" for n seconds) for things to happen in sequence. 
+  6) HINT: you may have to kill existing containers just make sure it's workign fine. Look at the "killitif" reoutine
+
+
+  
+ 
