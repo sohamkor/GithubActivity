@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
 readonly NETWORK_NAME="ecs189_default"
+readonly WEB1_IMG="activity_old"
+readonly WEB2_IMG="activity_new"
 readonly NGINX_CONTAINER_NAME="ecs189_proxy_1"
 
 # ------------------- Helper Methods ------------------
@@ -26,8 +28,7 @@ function getCurrentActiveVersion() {
 }
 
 function swapTo() {
-    imgToUpdateTo="$1"
-    thisContainer=$(getCurrentActiveVersion)
+    thisContainer="$1"
     if [ "$thisContainer" != "web1" ] && [ "$thisContainer" != "web2" ]
     then
         echo "swapContainers: Invalid parameter - $thisContainer"
@@ -36,20 +37,22 @@ function swapTo() {
     if [ "$thisContainer" == "web1" ]
     then
         otherContainer="web2"
-        swap_script="/bin/swap2.sh"
+        thisContainerImg=$WEB1_IMG
+        swap_script="/bin/swap1.sh"
     else
         otherContainer="web1"
-        swap_script="/bin/swap1.sh"
+        thisContainerImg=$WEB2_IMG
+        swap_script="/bin/swap2.sh"
     fi
 
     # Before we start the container, we just check to make sure no stray ones of it are still remaining
-    killitif $otherContainer
+    killitif $thisContainer
     # But since web1 may be spawned as ecs189_web1_1 by docker-compose, it doesn't hurt to remove that as well
-    dockerComposeName="ecs189_""$otherContainer""_1"
+    dockerComposeName="ecs189_""$thisContainer""_1"
     killitif $dockerComposeName
 
     # Now start up a fresh copy of it
-    docker run -d --name $otherContainer --network $NETWORK_NAME $imgToUpdateTo
+    docker run -d --name $thisContainer --network $NETWORK_NAME $thisContainerImg
 
     # Give it some time to start up
     sleep 5
@@ -58,30 +61,32 @@ function swapTo() {
     docker exec $NGINX_CONTAINER_NAME /bin/bash $swap_script
 
     # And finally clean up the other container
-    killitif $thisContainer
+    killitif $otherContainer
 }
 
-function isValidImage() {
-    imageName="$1"
-    docker image list | cut -d " " -f 1 | grep --quiet -w "$imageName"
-    return $?
-}
+# Start off by determining which web container to swap to
+currentActiveVersion=$(getCurrentActiveVersion)
 
-# Make sure that the parameter given is a valid image
-imageToSwapTo="$1"
-if [ "$imageToSwapTo" == "" ]
-then
-    echo "Parameter missing: specify the image to swap to."
-    exit 1
-fi
-
-if ! isValidImage $imageToSwapTo
-then
-    echo "The given image is not valid."
-    exit 1
-fi
-
-# Now that we have determined that the given image is one that is valid and therefore be used to create a container
-# that is what we'll do
-swapTo $imageToSwapTo
-echo "Swapped successfully."
+case "$1" in
+    "web1" | "1")
+        if [ "$currentActiveVersion" != "web1" ]
+        then
+            echo "Starting the swap to web1.";
+        else
+            echo "Seems like the current version already is web1."
+            exit 0
+        fi
+        swapTo "web1"
+        ;;
+    "web2" | "2")
+        if [ "$currentActiveVersion" != "web2" ]
+        then
+            echo "Starting the swap to web2.";
+        else
+            echo "Seems like the current version already is web2."
+            exit 0
+        fi
+        swapTo "web2"
+        ;;
+    *) echo "Did not recognize that parameter. Enter web1 or web2.";;
+esac
