@@ -15,7 +15,7 @@ Our java file GithubQuerier in src/main/querying/github gets the last 10 pull re
 
  
 
-# Commands we will execute
+# Commands We Will Execute
 
 ### Manual Swap
     1. This initializes both nginx and web1 (activity_old).  
