@@ -38,7 +38,7 @@ We have also made some modifications to Util.java as well by adding some helper 
     Command: docker run --name web1 --network ecs189_default activity_old
     
     8. Now we'll run the script which swaps us from web2 -> web1
-    Command: docker exec ecs189_proxy_1 /bin/bash /bin/swap1.sh
+    Command: docker exec ecs189proxy_1 /bin/bash /bin/swap1.sh
     
     9. Now clean up the old container that we swapped from (web2)
     Command: docker rm -f web2
