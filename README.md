@@ -3,17 +3,16 @@ Project for ECS 189E.
 
 by __Soham Koradia__ and __Kevin Ow__
 
-Add a file named "README.SUBMISSION"  to the root directory, Explaining the files you have created, what they do, and the commands you will type in, to demonstrate the hotswap. 
+Here's an overview of how to get this up and running.
 
 # Initial Files/Images
 ### Docker Images
-Initially we have three docker images created to work with; our activity_old image which is the image built off the old activity.war; 
+Initially we have three docker images created to work with; our activity_old image which is the image built off the old activity.war;
 our activity_new image which is the image that has our improved website and our ng image which is the image built from Professor Devanbu's nginx-rev directory.
 
 ### Java Files
-Our java file GithubQuerier in src/main/querying/github gets the last 10 pull requests from a user.
-
- 
+Our Java file GithubQuerier in src/main/querying/github gets the last 10 pull requests from a user.
+We have also made some modifications to Util.java as well by adding some helper methods designed to make working with the Git API a bit easier.
 
 # Commands We Will Execute
 
@@ -51,4 +50,3 @@ Our java file GithubQuerier in src/main/querying/github gets the last 10 pull re
     
     2. Specify the image you want to swap to if that image exists
     Command: ./swapExtraCredit.sh <image_name>
-
