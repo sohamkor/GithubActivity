@@ -1,5 +1,5 @@
 # GitHub Activity Monitor and Docker Container Swapping
-Project for one of the CS SE tools & infrastructure class here (see About Me on my website).
+Project for one of the CS SE tools & infrastructure classes here (see About Me on my website).
 
 by __Soham Koradia__ and __Kevin Ow__
 
